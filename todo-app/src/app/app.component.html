@@ -1,0 +1,39 @@
+<h1>
+  TODO APP
+ </h1>
+ <form (ngSubmit)="createTodo()" #todoForm="ngForm" class="form-inline todo-form">
+  <div class="col-lg-3">
+  </div>
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input name="new-todo" [(ngModel)]="newTodo.title" type="text" class="form-control" placeholder="Todo name" required autocomplete="off">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary" [disabled]="!todoForm.valid || requesting"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </span>
+    </div>
+  </div>
+  <div class="col-lg-3">
+  </div>
+ </form>
+
+ <div *ngFor="let todo of todos; let i = index" class="todo">
+  <button class="btn btn-danger btn-sm" style="margin:7px;float:right;" (click)="deleteTodo(todo)" [disabled]="requesting"><i class="fa fa-trash" aria-hidden="true"></i></button>
+  <p class="todo-title">{{todo.title}}</p>
+  <form (ngSubmit)="createTask(todo)" #taskForm="ngForm" class="form-inline task-form">
+    <div class="col-lg-12">
+      <div class="input-group">
+        <input name="new-task-{{i}}" [(ngModel)]="todo.taskContent" type="text" class="form-control" placeholder="Task name" required autocomplete="off">
+        <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary" [disabled]="!taskForm.valid || requesting"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </span>
+      </div>
+    </div>
+  </form>
+  <div class="col-lg-12">
+    <div *ngFor="let task of todo.tasks" class="todo-task">
+      <input type="checkbox" [checked]="task.state" (change)="updateTask(task)">
+      <span [ngClass]="{'todo-task-text': task.state}">{{task.content}}</span>
+      <button class="btn btn-sm btn-danger" (click)="deleteTask(todo, task)" type="button" style="float:right;" [disabled]="requesting"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+    </div>
+  </div>
+ </div>
